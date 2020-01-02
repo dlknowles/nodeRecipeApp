@@ -1,0 +1,13 @@
+<div class="col-sm-6">
+    <img src="images/people.jpg" alt="">
+</div>
+<div class="col-sm-6">
+    <h2 class="title">Learn to cook cutting edge food</h2>
+    <h3>Our Courses</h3>
+    <% offeredCourses.forEach(course => { %>
+    <h4>
+        <%= course.title %>
+    </h4>
+    <span>$<%= course.cost %></span>
+    <% }) %>
+</div>
