@@ -46,6 +46,7 @@ app.get("/contact", subscribersController.contactView);
 app.post("/subscribe", subscribersController.saveSubscriber);
 app.get("/subscribers", subscribersController.index, subscribersController.indexView);
 app.get("/users", usersController.index, usersController.indexView);
+app.get("/users/new", usersController.new);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
