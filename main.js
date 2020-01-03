@@ -7,7 +7,8 @@ const mongoose = require('mongoose'),
 const errorController = require('./controllers/errorController'),
     homeController = require("./controllers/homeController"),
     subscribersController = require('./controllers/subscribersController'),
-    Subscriber = require('./models/subscriber');
+    usersController = require('./controllers/usersController'),
+    coursesController = require('./controllers/coursesController');
 
 // connect to db
 mongoose.Promise = global.Promise;
@@ -40,10 +41,11 @@ app.use(homeController.logRequestPaths);
 
 // set up routes
 app.get("/", homeController.index);
-app.get("/courses", homeController.showCourses);
-app.get("/contact", subscribersController.getSubscriptionPage);
+app.get("/courses", coursesController.index, coursesController.indexView);
+app.get("/contact", subscribersController.contactView);
 app.post("/subscribe", subscribersController.saveSubscriber);
-app.get("/subscribers", subscribersController.getAllSubscribers);
+app.get("/subscribers", subscribersController.index, subscribersController.indexView);
+app.get("/users", usersController.index, usersController.indexView);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);

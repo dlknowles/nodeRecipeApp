@@ -2,17 +2,25 @@
 
 const mongoose = require('mongoose');
 
-/*
-const courseSchema = new mongoose.Schema({
+const courseSchema = mongoose.Schema({
     title: {
         type: String,
         required: true,
         unique: true
     },
-    description
+    description: {
+        type: String,
+        required: true
+    },
+    items: [],
+    zipCode: {
+        type: Number,
+        min: [10000, "Zip code is too short"],
+        max: [99999, "Zip code is too long"]
+    }
 });
-*/
 
+/*
 var courses = [
     {
         title: 'Event Driven Cakes',
@@ -31,3 +39,7 @@ var courses = [
 exports.getAllCourses = () => {
     return courses;
 };
+
+*/
+
+module.exports = mongoose.model("Course", courseSchema);

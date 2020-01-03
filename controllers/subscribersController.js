@@ -2,39 +2,36 @@
 
 const Subscriber = require('../models/subscriber');
 
-exports.getAllSubscribers = (req, res) => {
-    Subscriber.find({})
-        .exec()
-        .then(subscribers => {
-            res.render("subscribers", {
-                subscribers: subscribers
+module.exports = {
+    index: (req, res, next) => {
+        Subscriber.find({})
+            .then(subscribers => {
+                res.locals.subscribers = subscribers;
+                next();
+            })
+            .catch(error => {
+                console.error(`Error fetching subscribers: ${error.message}`);
             });
-        })
-        .catch(error => {
-            console.error(error.message);
-            return [];
-        })
-        .then(() => {
-            console.log("promise complete");
+    },
+    indexView: (req, res) => {
+        res.render("subscribers/index");
+    },
+    contactView: (req, res) => {
+        res.render("contact/index");
+    },
+    saveSubscriber: (req, res) => {
+        let newSubscriber = new Subscriber({
+            name: req.body.name,
+            email: req.body.email,
+            zipCode: req.body.zipCode
         });
-};
-
-exports.getSubscriptionPage = (req, res) => {
-    res.render("contact");
-};
-
-exports.saveSubscriber = (req, res) => {
-    let newSubscriber = new Subscriber({
-        name: req.body.name,
-        email: req.body.email,
-        zipCode: req.body.zipCode
-    });
-    newSubscriber
-        .save()
-        .then(result => {
-            res.render("thanks");
-        })
-        .catch(error => {
-            if (error) res.send(error);
-        });
+        newSubscriber
+            .save()
+            .then(result => {
+                res.render("contact/thanks");
+            })
+            .catch(error => {
+                if (error) res.send(error);
+            });
+    }
 };
