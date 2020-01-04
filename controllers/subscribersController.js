@@ -16,6 +16,21 @@ module.exports = {
     indexView: (req, res) => {
         res.render("subscribers/index");
     },
+    show: (req, res, next) => {
+        let subscriberId = req.params.id;
+        Subscriber.findById(subscriberId)
+            .then(subscriber => {
+                res.locals.subscriber = subscriber;
+                next();
+            })
+            .catch(error => {
+                console.error(`Error fetching subscriber: ${error.message}`);
+                next(error);
+            });
+    },
+    showView: (req, res) => {
+        res.render("subscribers/show");
+    },
     contactView: (req, res) => {
         res.render("contact/index");
     },

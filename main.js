@@ -24,7 +24,8 @@ db.once("open", () => {
 });
 
 // set up express app
-const app = express();
+const app = express(),
+    router = express.Router();
 
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
@@ -38,15 +39,19 @@ app.use(
 );
 app.use(express.json());
 app.use(homeController.logRequestPaths);
+app.use("/", router);
 
 // set up routes
-app.get("/", homeController.index);
-app.get("/courses", coursesController.index, coursesController.indexView);
-app.get("/contact", subscribersController.contactView);
-app.post("/subscribe", subscribersController.saveSubscriber);
-app.get("/subscribers", subscribersController.index, subscribersController.indexView);
-app.get("/users", usersController.index, usersController.indexView);
-app.get("/users/new", usersController.new);
+router.get("/", homeController.index);
+router.get("/courses", coursesController.index, coursesController.indexView);
+router.get("/contact", subscribersController.contactView);
+router.post("/subscribe", subscribersController.saveSubscriber);
+router.get("/subscribers", subscribersController.index, subscribersController.indexView);
+router.get("/subscribers/:id", subscribersController.show, subscribersController.showView);
+router.get("/users", usersController.index, usersController.indexView);
+router.get("/users/:id", usersController.show, usersController.showView);
+router.get("/users/new", usersController.new);
+router.post("/users/create", usersController.create, usersController.redirectView);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
